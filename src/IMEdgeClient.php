@@ -6,6 +6,7 @@ use gipfl\Protocol\JsonRpc\JsonRpcConnection;
 use gipfl\Protocol\JsonRpc\Notification;
 use gipfl\Protocol\JsonRpc\Request;
 use gipfl\Protocol\NetString\StreamWrapper;
+use Icinga\Module\Imedge\Config\Defaults;
 use IMEdge\RrdGraphInfo\GraphInfo;
 use IMEdge\Web\Grapher\Graph\ImedgeRrdGraph;
 use IMEdge\Web\Grapher\GraphModifier\PrintLabelFixer;
