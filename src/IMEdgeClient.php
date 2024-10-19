@@ -7,21 +7,20 @@ use gipfl\Protocol\JsonRpc\Notification;
 use gipfl\Protocol\JsonRpc\Request;
 use gipfl\Protocol\NetString\StreamWrapper;
 use Icinga\Module\Imedge\Config\Defaults;
-use IMEdge\RrdGraphInfo\GraphInfo;
-use IMEdge\Web\Grapher\Graph\ImedgeRrdGraph;
-use IMEdge\Web\Grapher\GraphModifier\PrintLabelFixer;
 use React\EventLoop\Loop;
 use React\Promise\PromiseInterface;
 use React\Socket\ConnectionInterface;
 use React\Socket\UnixConnector;
 
-use function Clue\React\Block\await;
 use function React\Promise\resolve;
 
 class IMEdgeClient
 {
     protected string $socket;
     protected ?JsonRpcConnection $connection = null;
+    /**
+     * @var PromiseInterface<JsonRpcConnection>|null
+     */
     protected ?PromiseInterface $pendingConnection = null;
     protected ?string $target = null;
 
@@ -78,18 +77,6 @@ class IMEdgeClient
             }
             $connection->sendNotification($packet);
         });
-    }
-
-    public function graph(ImedgeRrdGraph $graph): GraphInfo
-    {
-        $props = await($this->request('rrd.graph', [
-            'command' => (string) $graph,
-            'format'  => strtoupper($graph->getFormat()->getFormat()),
-        ]));
-        $info = GraphInfo::fromSerialization($props);
-        PrintLabelFixer::replacePrintLabels($graph, $info);
-
-        return $info;
     }
 
     /**
