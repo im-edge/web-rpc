@@ -38,6 +38,11 @@ class IMEdgeClient
         return $clone;
     }
 
+    public function getTarget(): ?string
+    {
+        return $this->target;
+    }
+
     public function getSocket(): string
     {
         return $this->socket;
